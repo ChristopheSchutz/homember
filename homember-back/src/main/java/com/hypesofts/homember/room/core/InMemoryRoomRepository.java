@@ -1,16 +1,17 @@
-package com.hypesofts.homember.room;
+package com.hypesofts.homember.room.core;
 
+import com.hypesofts.homember.room.api.RoomCreation;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class InMemoryRoomService implements RoomService {
+public class InMemoryRoomRepository implements RoomRepository {
 
     private final List<Room> rooms;
 
-    public InMemoryRoomService() {
+    public InMemoryRoomRepository() {
         this.rooms = new ArrayList<>(
                 List.of(
                         new Room(RoomId.create(), "Salon"),
@@ -25,14 +26,14 @@ public class InMemoryRoomService implements RoomService {
     }
 
     @Override
-    public Room createRoom(RoomCreation roomCreation) {
+    public Room create(RoomCreation roomCreation) {
         Room room = new Room(RoomId.create(), roomCreation.name());
         rooms.add(room);
         return room;
     }
 
     @Override
-    public void deleteRoom(RoomId roomId) {
+    public void delete(RoomId roomId) {
         rooms.removeIf(room -> room.getId().equals(roomId));
     }
 }

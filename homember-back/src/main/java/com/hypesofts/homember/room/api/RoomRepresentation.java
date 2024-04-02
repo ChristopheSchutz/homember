@@ -1,4 +1,6 @@
-package com.hypesofts.homember.room;
+package com.hypesofts.homember.room.api;
+
+import com.hypesofts.homember.room.core.Room;
 
 import java.util.UUID;
 

@@ -1,5 +1,5 @@
 GET http://localhost:8080/api/rooms
-####
+###
 POST /api/rooms HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
@@ -8,4 +8,6 @@ Content-Type: application/json
 "name": "Room 1"
 }
 ###
-DELETE http://localhost:8080/api/rooms/0edfd918-0489-48bf-8705-0827c11da795
+DELETE http://localhost:8080/api/rooms/b0cca5ce-a38f-469b-a3d9-e860093ae7ee
+###
+GET http://localhost:8080/api/rooms/details

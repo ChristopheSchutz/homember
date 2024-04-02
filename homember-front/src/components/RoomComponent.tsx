@@ -1,4 +1,4 @@
-import {RoomModel} from "./models/RoomModel.ts";
+import {RoomDetails} from "./models/RoomDetails.ts";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -11,16 +11,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {useState} from "react";
 function RoomComponent() {
 
-    const data: RoomModel[] = [
+    const data: RoomDetails[] = [
         {
             id: '1',
             name: 'Salon',
             cabinets: [
                 {
-                    id: '1', name: 'Bureau', items:[],
+                    id: '1', name: 'Bureau'
                 },
                 {
-                    id: '2', name: 'Garde-Manger', items:[]
+                    id: '2', name: 'Garde-Manger'
                 }]
         },
         {
@@ -32,6 +32,12 @@ function RoomComponent() {
 
     const [rooms, setRooms] = useState(data);
     const [newRoomName, setNewRoomName] = useState('');
+
+    const handleGet = () => {
+        fetch('http://localhost:8080/api/rooms')
+            .then(response => response.json())
+            .then(data => setRooms(data));
+    };
 
     const handleDelete = (roomId: string) => {
         console.log(`Delete ${roomId}`);

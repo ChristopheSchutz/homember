@@ -1,5 +1,6 @@
 package com.hypesofts.homember.technical.baseclass;
 
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.hypesofts.homember.technical.entityfetcher.EntityFetcherChain;
 import lombok.Getter;
 
@@ -7,6 +8,7 @@ import java.util.UUID;
 
 @Getter
 public abstract class FetchableDomainId<T extends DomainEntity> implements DomainId {
+    @JsonUnwrapped
     private final UUID id;
 
     protected FetchableDomainId(UUID id) {

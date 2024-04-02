@@ -1,0 +1,10 @@
+GET http://localhost:8080/api/cabinets
+###
+POST /api/cabinets HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+"name": "Cabinet 1",
+  "roomId": "af28cf0e-4fe5-4d72-bf77-04d3c09ec191"
+}
