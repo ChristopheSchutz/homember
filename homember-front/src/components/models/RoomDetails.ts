@@ -1,7 +1,7 @@
 import {CabinetModel} from "./CabinetModel.ts";
-import {RoomModel} from "./RoomModel.ts";
 
 export interface RoomDetails {
-    room: RoomModel;
+    id: string;
+    name: string;
     cabinets: Array<CabinetModel>;
 }

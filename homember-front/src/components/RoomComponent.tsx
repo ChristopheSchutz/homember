@@ -1,4 +1,3 @@
-import {RoomDetails} from "./models/RoomDetails.ts";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,54 +7,47 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import {Button, IconButton, TextField} from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {RoomDetails} from "./models/RoomDetails.ts";
+
 function RoomComponent() {
 
-    const data: RoomDetails[] = [
-        {
-            id: '1',
-            name: 'Salon',
-            cabinets: [
-                {
-                    id: '1', name: 'Bureau'
-                },
-                {
-                    id: '2', name: 'Garde-Manger'
-                }]
-        },
-        {
-            id: '2',
-            name:'Cave',
-            cabinets: []
-        }
-    ];
-
-    const [rooms, setRooms] = useState(data);
+    const [rooms, setRooms] = useState([] as RoomDetails[]);
     const [newRoomName, setNewRoomName] = useState('');
+    const BASE_API_URL = 'http://localhost:8080/api/rooms';
 
-    const handleGet = () => {
-        fetch('http://localhost:8080/api/rooms')
+    const handleGetRoomDetails = () => {
+        fetch(BASE_API_URL+'/details')
             .then(response => response.json())
             .then(data => setRooms(data));
     };
 
     const handleDelete = (roomId: string) => {
-        console.log(`Delete ${roomId}`);
-        console.log(rooms);
-        const newRooms = rooms.filter(room => room.id !== roomId);
-        setRooms(newRooms);
+        fetch( BASE_API_URL + '/' + roomId, {
+            method: 'DELETE'
+        }).then(() => {
+            handleGetRoomDetails();
+        });
     };
 
-
     const handleAdd = () => {
-        console.log('Add a room named ' + newRoomName);
-        setNewRoomName('');
-        rooms.push({
-            id: '3',
-            name: newRoomName,
-            cabinets: []
+        fetch( BASE_API_URL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: newRoomName
+            })
+        }).then(() => {
+            setNewRoomName('');
+            handleGetRoomDetails();
         });
     }
+
+    useEffect(() => {
+        handleGetRoomDetails();
+    }, [])
 
     return (
         <div className="room-component">
