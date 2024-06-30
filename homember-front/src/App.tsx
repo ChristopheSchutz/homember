@@ -1,7 +1,7 @@
 import './App.css'
-import Title from "./components/Title.tsx";
-import LeftMenu from "./components/LeftMenu.tsx";
-import MainContent from "./components/MainContent.tsx";
+import Title from "./components/template/Title.tsx";
+import LeftMenu from "./components/template/LeftMenu.tsx";
+import MainContent from "./components/template/MainContent.tsx";
 
 function App() {
     return (

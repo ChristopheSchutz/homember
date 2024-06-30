@@ -2,6 +2,7 @@ package com.hypesofts.homember.application.room.usecase;
 
 import com.hypesofts.homember.application.room.api.RoomCreation;
 import com.hypesofts.homember.application.room.api.RoomRepresentation;
+import com.hypesofts.homember.application.room.core.Room;
 import com.hypesofts.homember.application.room.core.RoomId;
 import com.hypesofts.homember.application.room.core.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,8 @@ public class CRUDRoomUseCase {
     }
 
     public RoomRepresentation create(RoomCreation roomCreation) {
-        return new RoomRepresentation(roomRepository.create(roomCreation));
+        Room room = new Room(RoomId.create(), roomCreation.name());
+        return new RoomRepresentation(roomRepository.create(room));
     }
 
     public void delete(UUID roomId) {

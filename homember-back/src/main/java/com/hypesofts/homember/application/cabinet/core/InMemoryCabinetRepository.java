@@ -1,6 +1,5 @@
 package com.hypesofts.homember.application.cabinet.core;
 
-import com.hypesofts.homember.application.cabinet.api.CabinetCreation;
 import com.hypesofts.homember.application.room.core.RoomId;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +16,14 @@ public class InMemoryCabinetRepository implements CabinetRepository {
     }
 
     @Override
-    public Cabinet create(CabinetCreation cabinetCreation) {
-        Cabinet cabinet = new Cabinet(CabinetId.create(), cabinetCreation.name(), RoomId.of(cabinetCreation.roomId()));
+    public Cabinet create(Cabinet cabinet) {
         cabinets.add(cabinet);
         return cabinet;
+    }
+
+    @Override
+    public void delete(CabinetId cabinetId) {
+        cabinets.removeIf(cabinet -> cabinet.getId().equals(cabinetId));
     }
 
     @Override

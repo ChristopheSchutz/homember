@@ -21,18 +21,18 @@ import java.util.UUID;
 @ResponseBody
 public class RoomAPI {
 
+    private CRUDRoomUseCase crudRoomUseCase;
+
     @Autowired
-    public RoomAPI(CRUDRoomUseCase roomUseCase, GetRoomDetailsUseCase getRoomDetailsUseCase) {
-        this.roomUseCase = roomUseCase;
+    public RoomAPI(CRUDRoomUseCase crudRoomUseCase, GetRoomDetailsUseCase getRoomDetailsUseCase) {
+        this.crudRoomUseCase = crudRoomUseCase;
         this.getRoomDetailsUseCase = getRoomDetailsUseCase;
     }
-
-    private CRUDRoomUseCase roomUseCase;
     private GetRoomDetailsUseCase getRoomDetailsUseCase;
 
     @GetMapping
     public List<RoomRepresentation> getRooms() {
-        return roomUseCase.getRooms();
+        return crudRoomUseCase.getRooms();
     }
 
     @GetMapping("/details")
@@ -42,11 +42,11 @@ public class RoomAPI {
 
     @PostMapping
     public RoomRepresentation create(@RequestBody RoomCreation roomCreation) {
-        return roomUseCase.create(roomCreation);
+        return crudRoomUseCase.create(roomCreation);
     }
 
     @DeleteMapping("/{roomId}")
     public void delete(@PathVariable UUID roomId) {
-        roomUseCase.delete(roomId);
+        crudRoomUseCase.delete(roomId);
     }
 }

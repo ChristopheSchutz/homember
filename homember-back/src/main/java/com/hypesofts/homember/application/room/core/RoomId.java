@@ -6,8 +6,13 @@ import lombok.NonNull;
 import java.util.UUID;
 
 public class RoomId extends FetchableDomainId<Room> {
-    public static RoomId of(@NonNull UUID id) { return new RoomId(id);}
-    static RoomId create() { return new RoomId(UUID.randomUUID());}
+    public static RoomId of(@NonNull UUID id) {
+        return new RoomId(id);
+    }
+
+    public static RoomId create() {
+        return new RoomId(UUID.randomUUID());
+    }
 
     public RoomId(UUID id) {
         super(id);

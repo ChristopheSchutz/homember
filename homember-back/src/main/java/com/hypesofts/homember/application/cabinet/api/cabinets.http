@@ -5,6 +5,6 @@ Host: localhost:8080
 Content-Type: application/json
 
 {
-"name": "Cabinet 1",
-  "roomId": "af28cf0e-4fe5-4d72-bf77-04d3c09ec191"
+  "name": "Armoire du fond",
+  "roomId": "7955c97b-37b7-48d0-a608-f6e6d4804689"
 }

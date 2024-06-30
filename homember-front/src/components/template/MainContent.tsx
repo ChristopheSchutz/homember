@@ -1,7 +1,7 @@
-import {Routes, Route} from 'react-router-dom';
-import RoomComponent from "./RoomComponent.tsx";
+import {Route, Routes} from 'react-router-dom';
+import RoomsDashboard from "../RoomsDashboard.tsx";
 import HomeComponent from "./HomeComponent.tsx";
-import CabinetComponent from "./CabinetComponent.tsx";
+import CabinetsDashboard from "../CabinetsDashboard.tsx";
 
 function MainContent() {
     return (
@@ -9,8 +9,8 @@ function MainContent() {
             <div className="main-content">
                 <Routes>
                     <Route path="/" element={<HomeComponent/>}/>
-                    <Route path="/rooms" element={<RoomComponent/>}/>
-                    <Route path="/cabinets" element={<CabinetComponent/>}/>
+                    <Route path="/rooms" element={<RoomsDashboard/>}/>
+                    <Route path="/cabinets" element={<CabinetsDashboard/>}/>
                     <Route path="*" element={<HomeComponent/>}/>
                 </Routes>
             </div>

@@ -6,8 +6,13 @@ import lombok.NonNull;
 import java.util.UUID;
 
 public class CabinetId extends FetchableDomainId<Cabinet> {
-    static CabinetId of(@NonNull UUID id) { return new CabinetId(id);}
-    public static CabinetId create() { return new CabinetId(UUID.randomUUID());}
+    public static CabinetId of(@NonNull UUID id) {
+        return new CabinetId(id);
+    }
+
+    public static CabinetId create() {
+        return new CabinetId(UUID.randomUUID());
+    }
 
     CabinetId(UUID id) {
         super(id);
