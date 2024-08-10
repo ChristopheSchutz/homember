@@ -9,11 +9,11 @@ import java.util.List;
 public enum Command {
     PUT("range", List.of(ParameterPosition.of(ParameterType.ITEM, 1), ParameterPosition.of(ParameterType.CABINET, 2), ParameterPosition.of(ParameterType.ROOM, 3))),
     REMOVE("enlève", List.of(ParameterPosition.of(ParameterType.ITEM, 1), ParameterPosition.of(ParameterType.CABINET, 2), ParameterPosition.of(ParameterType.ROOM, 3))),
-    LOCATE("où", List.of(ParameterPosition.of(ParameterType.ITEM, 1))),
-    UNDEFINED("undefined", Collections.EMPTY_LIST);
+    LOCATE("trouve", List.of(ParameterPosition.of(ParameterType.ITEM, 1))),
+    UNDEFINED("undefined", Collections.emptyList());
 
-    private String word;
-    private List<ParameterPosition> parameterPositions;
+    private final String word;
+    private final List<ParameterPosition> parameterPositions;
 
     Command(String word, List<ParameterPosition> parameterPositions) {
         this.word = word;
@@ -21,9 +21,9 @@ public enum Command {
     }
 
     public static Command fromString(String text) {
-        for (Command b : Command.values()) {
-            if (b.word.equalsIgnoreCase(text)) {
-                return b;
+        for (Command command : Command.values()) {
+            if (command.word.equalsIgnoreCase(text)) {
+                return command;
             }
         }
         return UNDEFINED;
