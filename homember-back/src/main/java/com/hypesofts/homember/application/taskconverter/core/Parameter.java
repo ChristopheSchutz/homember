@@ -1,13 +1,7 @@
 package com.hypesofts.homember.application.taskconverter.core;
 
-public class Parameter {
-    private String name;
-    private String value;
-
-    public Parameter(String name, String value) {
-        this.name = name;
-        this.value = value;
+public record Parameter(ParameterType type, String value) {
+    public static Parameter of(ParameterType type, String value) {
+        return new Parameter(type, value);
     }
-
-    // getters and setters
 }

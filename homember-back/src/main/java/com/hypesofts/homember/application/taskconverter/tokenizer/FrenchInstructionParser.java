@@ -3,6 +3,8 @@ package com.hypesofts.homember.application.taskconverter.tokenizer;
 import com.hypesofts.homember.application.taskconverter.core.Command;
 import com.hypesofts.homember.application.taskconverter.core.Instruction;
 import com.hypesofts.homember.application.taskconverter.core.InstructionRequest;
+import com.hypesofts.homember.application.taskconverter.core.Parameter;
+import com.hypesofts.homember.application.taskconverter.core.ParameterPosition;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,13 +12,12 @@ import java.util.List;
 public class FrenchInstructionParser implements InstructionParser {
 
     private static final int COMMAND_POSITION = 0;
-    private List<String> tokenizedInput;
-    private Command command;
 
     @Override
     public Instruction parse(InstructionRequest request) {
-        this.tokenizedInput = tokenizeInput(request);
-        return new Instruction(getCommand());
+        var tokenizedInput = tokenizeInput(request);
+        var command = getCommand(tokenizedInput);
+        return new Instruction(command, getParameters(tokenizedInput, command));
     }
 
     private List<String> tokenizeInput(InstructionRequest instructionRequest) {
@@ -27,10 +28,17 @@ public class FrenchInstructionParser implements InstructionParser {
                 .split(" "));
     }
 
-    public Command getCommand() {
-        if (command == null) {
-            command = Command.fromString(tokenizedInput.get(COMMAND_POSITION));
-        }
-        return command;
+    public Command getCommand(List<String> tokenizedInput) {
+        return Command.fromString(tokenizedInput.get(COMMAND_POSITION));
+    }
+
+    public List<Parameter> getParameters(List<String> tokenizedInput, Command command) {
+        return command.getParameterPositions().stream()
+                .map(parameterPosition -> getParameter(tokenizedInput, parameterPosition))
+                .toList();
+    }
+
+    private Parameter getParameter(List<String> tokenizedInput, ParameterPosition parameterPosition) {
+        return Parameter.of(parameterPosition.type(), tokenizedInput.get(parameterPosition.position()));
     }
 }
