@@ -1,4 +1,4 @@
-package com.hypesofts.homember.application.taskconverter.core;
+package com.hypesofts.homember.application.instruction.core;
 
 public record Parameter(ParameterType type, String value) {
     public static Parameter of(ParameterType type, String value) {

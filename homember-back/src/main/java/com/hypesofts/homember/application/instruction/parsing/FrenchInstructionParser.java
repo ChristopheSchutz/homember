@@ -1,11 +1,11 @@
-package com.hypesofts.homember.application.taskconverter.parsing;
+package com.hypesofts.homember.application.instruction.parsing;
 
-import com.hypesofts.homember.application.taskconverter.core.Command;
-import com.hypesofts.homember.application.taskconverter.core.Instruction;
-import com.hypesofts.homember.application.taskconverter.core.InstructionRequest;
-import com.hypesofts.homember.application.taskconverter.core.Parameter;
-import com.hypesofts.homember.application.taskconverter.core.ParameterPosition;
-import com.hypesofts.homember.application.taskconverter.core.TokenizedInstruction;
+import com.hypesofts.homember.application.instruction.core.Command;
+import com.hypesofts.homember.application.instruction.core.Instruction;
+import com.hypesofts.homember.application.instruction.core.InstructionRequest;
+import com.hypesofts.homember.application.instruction.core.Parameter;
+import com.hypesofts.homember.application.instruction.core.PositionedParameterType;
+import com.hypesofts.homember.application.instruction.core.TokenizedInstruction;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class FrenchInstructionParser implements InstructionParser {
     }
 
     private void verifyParameters(TokenizedInstruction tokenizedInstruction, Command command) {
-        if (command.getParameterPositions().size() >= tokenizedInstruction.tokens().size()) {
+        if (command.getPositionedParameterTypes().size() >= tokenizedInstruction.tokens().size()) {
             throw new IllegalArgumentException("Invalid number of parameters for command " + command);
         }
     }
@@ -34,13 +34,13 @@ public class FrenchInstructionParser implements InstructionParser {
     }
 
     private List<Parameter> buildParameter(TokenizedInstruction tokenizedInstruction, Command command) {
-        return command.getParameterPositions().stream()
-                .map(parameterPosition -> getParameterAtPosition(tokenizedInstruction, parameterPosition))
+        return command.getPositionedParameterTypes().stream()
+                .map(positionedParameterType -> getParameterAtPosition(tokenizedInstruction, positionedParameterType))
                 .toList();
     }
 
-    private Parameter getParameterAtPosition(TokenizedInstruction tokenizedInstruction, ParameterPosition parameterPosition) {
+    private Parameter getParameterAtPosition(TokenizedInstruction tokenizedInstruction, PositionedParameterType positionedParameterType) {
 
-        return Parameter.of(parameterPosition.type(), tokenizedInstruction.get(parameterPosition.position()));
+        return Parameter.of(positionedParameterType.type(), tokenizedInstruction.get(positionedParameterType.position()));
     }
 }

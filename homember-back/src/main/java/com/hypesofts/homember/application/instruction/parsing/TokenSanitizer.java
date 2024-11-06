@@ -1,6 +1,6 @@
-package com.hypesofts.homember.application.taskconverter.parsing;
+package com.hypesofts.homember.application.instruction.parsing;
 
-import com.hypesofts.homember.application.taskconverter.core.TokenizedInstruction;
+import com.hypesofts.homember.application.instruction.core.TokenizedInstruction;
 
 import java.util.Set;
 

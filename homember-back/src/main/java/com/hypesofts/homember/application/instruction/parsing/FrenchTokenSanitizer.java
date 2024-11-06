@@ -1,4 +1,4 @@
-package com.hypesofts.homember.application.taskconverter.parsing;
+package com.hypesofts.homember.application.instruction.parsing;
 
 import java.util.Set;
 

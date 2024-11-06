@@ -1,8 +1,8 @@
-package com.hypesofts.homember.application.taskconverter.adapter;
+package com.hypesofts.homember.application.instruction.adapter;
 
-import com.hypesofts.homember.application.taskconverter.core.InstructionRequest;
-import com.hypesofts.homember.application.taskconverter.parsing.FrenchTokenSanitizer;
-import com.hypesofts.homember.application.taskconverter.parsing.InstructionTokenizer;
+import com.hypesofts.homember.application.instruction.core.InstructionRequest;
+import com.hypesofts.homember.application.instruction.parsing.FrenchTokenSanitizer;
+import com.hypesofts.homember.application.instruction.parsing.InstructionTokenizer;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

@@ -1,4 +1,4 @@
-package com.hypesofts.homember.application.taskconverter.core;
+package com.hypesofts.homember.application.instruction.core;
 
 public record InstructionRequest(String input) {
     public static InstructionRequest of(String input) {

@@ -1,12 +1,12 @@
-package com.hypesofts.homember.application.taskconverter.adapter;
+package com.hypesofts.homember.application.instruction.adapter;
 
-import com.hypesofts.homember.application.taskconverter.core.Command;
-import com.hypesofts.homember.application.taskconverter.core.InstructionRequest;
-import com.hypesofts.homember.application.taskconverter.core.Parameter;
-import com.hypesofts.homember.application.taskconverter.core.ParameterType;
-import com.hypesofts.homember.application.taskconverter.parsing.FrenchInstructionParser;
-import com.hypesofts.homember.application.taskconverter.parsing.FrenchTokenSanitizer;
-import com.hypesofts.homember.application.taskconverter.parsing.InstructionTokenizer;
+import com.hypesofts.homember.application.instruction.core.Command;
+import com.hypesofts.homember.application.instruction.core.InstructionRequest;
+import com.hypesofts.homember.application.instruction.core.Parameter;
+import com.hypesofts.homember.application.instruction.core.ParameterType;
+import com.hypesofts.homember.application.instruction.parsing.FrenchInstructionParser;
+import com.hypesofts.homember.application.instruction.parsing.FrenchTokenSanitizer;
+import com.hypesofts.homember.application.instruction.parsing.InstructionTokenizer;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,15 +30,6 @@ class FrenchInstructionParserTest {
     private final InstructionTokenizer tokenizer = new InstructionTokenizer(new FrenchTokenSanitizer());
     private final FrenchInstructionParser parser = new FrenchInstructionParser();
 
-    private static Stream<Arguments> testParameters() {
-        return Stream.of(
-                Arguments.of("range les clés dans l'armoire du salon", Command.PUT, List.of(PARAMETER_ITEM_CLES, PARAMETER_CABINET_ARMOIRE, PARAMETER_ROOM_SALON)),
-                Arguments.of("enlève les briquets de la commode du salon", Command.REMOVE, List.of(PARAMETER_ITEM_BRIQUETS, PARAMETER_CABINET_COMMODE, PARAMETER_ROOM_SALON)),
-                Arguments.of("trouve le casque", Command.LOCATE, List.of(PARAMETER_ITEM_CASQUE)),
-                Arguments.of("autre", Command.UNDEFINED, Collections.emptyList())
-        );
-    }
-
     @ParameterizedTest
     @MethodSource("testParameters")
     void should_parse_instruction(String input, Command expected, List<Parameter> parameters) {
@@ -51,6 +42,15 @@ class FrenchInstructionParserTest {
 
         Assertions.assertThat(instruction.parameters()).isNotNull();
         Assertions.assertThat(instruction.parameters()).containsExactlyInAnyOrderElementsOf(parameters);
+    }
+
+    private static Stream<Arguments> testParameters() {
+        return Stream.of(
+                Arguments.of("range les clés dans l'armoire du salon", Command.PUT, List.of(PARAMETER_ITEM_CLES, PARAMETER_CABINET_ARMOIRE, PARAMETER_ROOM_SALON)),
+                Arguments.of("enlève les briquets de la commode du salon", Command.REMOVE, List.of(PARAMETER_ITEM_BRIQUETS, PARAMETER_CABINET_COMMODE, PARAMETER_ROOM_SALON)),
+                Arguments.of("trouve le casque", Command.LOCATE, List.of(PARAMETER_ITEM_CASQUE)),
+                Arguments.of("autre", Command.UNDEFINED, Collections.emptyList())
+        );
     }
 
     @Test
