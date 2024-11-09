@@ -1,65 +1,143 @@
 package com.hypesofts.homember.application.instruction.adapter;
 
 import com.hypesofts.homember.application.instruction.core.Command;
-import com.hypesofts.homember.application.instruction.core.InstructionRequest;
+import com.hypesofts.homember.application.instruction.core.Instruction;
 import com.hypesofts.homember.application.instruction.core.Parameter;
 import com.hypesofts.homember.application.instruction.core.ParameterType;
+import com.hypesofts.homember.application.instruction.core.TokenizedInstruction;
+import com.hypesofts.homember.application.instruction.io.InstructionRequest;
 import com.hypesofts.homember.application.instruction.parsing.FrenchInstructionParser;
-import com.hypesofts.homember.application.instruction.parsing.FrenchTokenSanitizer;
 import com.hypesofts.homember.application.instruction.parsing.InstructionTokenizer;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class FrenchInstructionParserTest {
 
-    private static final Parameter PARAMETER_ITEM_CLES = Parameter.of(ParameterType.ITEM, "clés");
-    private static final Parameter PARAMETER_ITEM_BRIQUETS = Parameter.of(ParameterType.ITEM, "briquets");
-    private static final Parameter PARAMETER_ITEM_CASQUE = Parameter.of(ParameterType.ITEM, "casque");
-    private static final Parameter PARAMETER_CABINET_ARMOIRE = Parameter.of(ParameterType.CABINET, "armoire");
-    private static final Parameter PARAMETER_CABINET_COMMODE = Parameter.of(ParameterType.CABINET, "commode");
-    private static final Parameter PARAMETER_ROOM_SALON = Parameter.of(ParameterType.ROOM, "salon");
+    @Mock
+    private InstructionTokenizer tokenizer;
 
-    private final InstructionTokenizer tokenizer = new InstructionTokenizer(new FrenchTokenSanitizer());
-    private final FrenchInstructionParser parser = new FrenchInstructionParser();
+    private FrenchInstructionParser parser;
 
-    @ParameterizedTest
-    @MethodSource("testParameters")
-    void should_parse_instruction(String input, Command expected, List<Parameter> parameters) {
-        InstructionRequest instructionRequest = new InstructionRequest(input);
-
-        var instruction = parser.parse(instructionRequest, tokenizer);
-
-        Assertions.assertThat(instruction).isNotNull();
-        Assertions.assertThat(instruction.command()).isEqualTo(expected);
-
-        Assertions.assertThat(instruction.parameters()).isNotNull();
-        Assertions.assertThat(instruction.parameters()).containsExactlyInAnyOrderElementsOf(parameters);
-    }
-
-    private static Stream<Arguments> testParameters() {
-        return Stream.of(
-                Arguments.of("range les clés dans l'armoire du salon", Command.PUT, List.of(PARAMETER_ITEM_CLES, PARAMETER_CABINET_ARMOIRE, PARAMETER_ROOM_SALON)),
-                Arguments.of("enlève les briquets de la commode du salon", Command.REMOVE, List.of(PARAMETER_ITEM_BRIQUETS, PARAMETER_CABINET_COMMODE, PARAMETER_ROOM_SALON)),
-                Arguments.of("trouve le casque", Command.LOCATE, List.of(PARAMETER_ITEM_CASQUE)),
-                Arguments.of("autre", Command.UNDEFINED, Collections.emptyList())
-        );
+    @BeforeEach
+    void setUp() {
+        parser = new FrenchInstructionParser();
     }
 
     @Test
-    void should_fail_parsing_instruction_with_invalid_number_of_parameters() {
-        InstructionRequest instructionRequest = new InstructionRequest("range les clés dans l'armoire");
+    void should_parse_simple_put_instruction() {
+        // Given
+        var request = new InstructionRequest("range la clé dans l'armoire");
+        var tokenizedInstruction = TokenizedInstruction.of(
+                List.of("range", "la", "clé", "dans", "l'armoire")
+        );
+        when(tokenizer.tokenize(request)).thenReturn(tokenizedInstruction);
 
-        Assertions.assertThatThrownBy(() -> parser.parse(instructionRequest, tokenizer))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("Invalid number of parameters for command PUT");
+        // When
+        Instruction instruction = parser.parse(request, tokenizer);
+
+        // Then
+        assertThat(instruction.command()).isEqualTo(Command.PUT);
+        assertThat(instruction.parameters()).hasSize(2);
+        assertThat(instruction.parameters().get(0))
+                .isEqualTo(Parameter.of(ParameterType.ITEM, "la clé"));
+        assertThat(instruction.parameters().get(1))
+                .isEqualTo(Parameter.of(ParameterType.PLACE, "l'armoire"));
     }
 
+    @Test
+    void should_parse_put_instruction_with_multi_word_parameters() {
+        // Given
+        var request = new InstructionRequest("range les déguisements dans le meuble à gauche");
+        var tokenizedInstruction = TokenizedInstruction.of(
+                List.of("range", "les", "déguisements", "dans", "le", "meuble", "à", "gauche")
+        );
+        when(tokenizer.tokenize(request)).thenReturn(tokenizedInstruction);
+
+        // When
+        Instruction instruction = parser.parse(request, tokenizer);
+
+        // Then
+        assertThat(instruction.command()).isEqualTo(Command.PUT);
+        assertThat(instruction.parameters()).hasSize(2);
+        assertThat(instruction.parameters().get(0))
+                .isEqualTo(Parameter.of(ParameterType.ITEM, "les déguisements"));
+        assertThat(instruction.parameters().get(1))
+                .isEqualTo(Parameter.of(ParameterType.PLACE, "le meuble à gauche"));
+    }
+
+    @Test
+    void should_parse_instruction_with_special_characters() {
+        // Given
+        var request = new InstructionRequest("range l'écharpe dans l'armoire-penderie");
+        var tokenizedInstruction = TokenizedInstruction.of(
+                List.of("range", "l'écharpe", "dans", "l'armoire-penderie")
+        );
+        when(tokenizer.tokenize(request)).thenReturn(tokenizedInstruction);
+
+        // When
+        Instruction instruction = parser.parse(request, tokenizer);
+
+        // Then
+        assertThat(instruction.command()).isEqualTo(Command.PUT);
+        assertThat(instruction.parameters()).hasSize(2);
+        assertThat(instruction.parameters().get(0))
+                .isEqualTo(Parameter.of(ParameterType.ITEM, "l'écharpe"));
+        assertThat(instruction.parameters().get(1))
+                .isEqualTo(Parameter.of(ParameterType.PLACE, "l'armoire-penderie"));
+    }
+
+    @Test
+    void should_throw_exception_when_delimiter_is_missing() {
+        // Given
+        var request = new InstructionRequest("range la clé l'armoire");  // missing "dans"
+        var tokenizedInstruction = TokenizedInstruction.of(
+                List.of("range", "la", "clé", "l'armoire")
+        );
+        when(tokenizer.tokenize(request)).thenReturn(tokenizedInstruction);
+
+        // When/Then
+        assertThatThrownBy(() -> parser.parse(request, tokenizer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Missing delimiter 'dans'");
+    }
+
+    @Test
+    void should_throw_exception_when_before_parameter_is_missing() {
+        // Given
+        var request = new InstructionRequest("range dans l'armoire");  // missing item parameter
+        var tokenizedInstruction = TokenizedInstruction.of(
+                List.of("range", "dans", "l'armoire")
+        );
+        when(tokenizer.tokenize(request)).thenReturn(tokenizedInstruction);
+
+        // When/Then
+        assertThatThrownBy(() -> parser.parse(request, tokenizer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Missing required parameter of type ITEM");
+    }
+
+    @Test
+    void should_throw_exception_when_after_parameter_is_missing() {
+        // Given
+        var request = new InstructionRequest("range la clé dans");  // missing item parameter
+        var tokenizedInstruction = TokenizedInstruction.of(
+                List.of("range", "la", "clé", "dans")
+        );
+        when(tokenizer.tokenize(request)).thenReturn(tokenizedInstruction);
+
+        // When/Then
+        assertThatThrownBy(() -> parser.parse(request, tokenizer))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("Missing required parameter of type PLACE");
+    }
 }

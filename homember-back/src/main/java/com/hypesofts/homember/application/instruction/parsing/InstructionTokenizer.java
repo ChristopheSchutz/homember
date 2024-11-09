@@ -1,7 +1,7 @@
 package com.hypesofts.homember.application.instruction.parsing;
 
-import com.hypesofts.homember.application.instruction.core.InstructionRequest;
 import com.hypesofts.homember.application.instruction.core.TokenizedInstruction;
+import com.hypesofts.homember.application.instruction.io.InstructionRequest;
 import lombok.AllArgsConstructor;
 
 import java.util.Arrays;

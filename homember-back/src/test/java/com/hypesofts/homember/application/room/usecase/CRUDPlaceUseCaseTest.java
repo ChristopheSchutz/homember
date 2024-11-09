@@ -1,9 +1,9 @@
 package com.hypesofts.homember.application.room.usecase;
 
 import com.hypesofts.homember.application.room.api.RoomCreation;
-import com.hypesofts.homember.application.room.core.Room;
-import com.hypesofts.homember.application.room.core.RoomId;
-import com.hypesofts.homember.application.room.core.RoomRepository;
+import com.hypesofts.homember.application.room.core.Place;
+import com.hypesofts.homember.application.room.core.PlaceId;
+import com.hypesofts.homember.application.room.core.PlaceRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,23 +21,23 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CRUDRoomUseCaseTestG {
+class CRUDPlaceUseCaseTest {
 
     @Mock
-    private RoomRepository roomRepository;
+    private PlaceRepository placeRepository;
 
-    private CRUDRoomUseCase useCase;
+    private CRUDPlaceUseCase useCase;
 
     @BeforeEach
     void setUp() {
-        useCase = new CRUDRoomUseCase(roomRepository);
+        useCase = new CRUDPlaceUseCase(placeRepository);
     }
 
     // Step 1: Get empty room list
     @Test
     void should_return_empty_list_when_no_rooms_exist() {
         // Given
-        when(roomRepository.getRooms()).thenReturn(Collections.emptyList());
+        when(placeRepository.getRooms()).thenReturn(Collections.emptyList());
 
         // When
         var result = useCase.getRooms();
@@ -50,9 +50,9 @@ class CRUDRoomUseCaseTestG {
     @Test
     void should_return_list_with_one_room() {
         // Given
-        var roomId = RoomId.of(UUID.randomUUID());
-        var room = new Room(roomId, "Bedroom");
-        when(roomRepository.getRooms()).thenReturn(List.of(room));
+        var roomId = PlaceId.of(UUID.randomUUID());
+        var room = new Place(roomId, "Bedroom");
+        when(placeRepository.getRooms()).thenReturn(List.of(room));
 
         // When
         var result = useCase.getRooms();
@@ -69,15 +69,15 @@ class CRUDRoomUseCaseTestG {
     void should_create_new_room() {
         // Given
         var roomCreation = new RoomCreation("Living Room");
-        var createdRoom = new Room(RoomId.create(), "Living Room");
-        when(roomRepository.create(any(Room.class))).thenReturn(createdRoom);
+        var createdRoom = new Place(PlaceId.create(), "Living Room");
+        when(placeRepository.create(any(Place.class))).thenReturn(createdRoom);
 
         // When
         var result = useCase.create(roomCreation);
 
         // Then
-        var roomCaptor = ArgumentCaptor.forClass(Room.class);
-        verify(roomRepository).create(roomCaptor.capture());
+        var roomCaptor = ArgumentCaptor.forClass(Place.class);
+        verify(placeRepository).create(roomCaptor.capture());
 
         var capturedRoom = roomCaptor.getValue();
         assertThat(capturedRoom.getName()).isEqualTo("Living Room");
@@ -97,8 +97,8 @@ class CRUDRoomUseCaseTestG {
         useCase.delete(roomId);
 
         // Then
-        var roomIdCaptor = ArgumentCaptor.forClass(RoomId.class);
-        verify(roomRepository).delete(roomIdCaptor.capture());
+        var roomIdCaptor = ArgumentCaptor.forClass(PlaceId.class);
+        verify(placeRepository).delete(roomIdCaptor.capture());
         assertThat(roomIdCaptor.getValue().getId()).isEqualTo(roomId);
     }
 
@@ -106,12 +106,12 @@ class CRUDRoomUseCaseTestG {
     @Test
     void should_return_multiple_rooms() {
         // Given
-        var bedroomId = RoomId.of(UUID.randomUUID());
-        var kitchenId = RoomId.of(UUID.randomUUID());
-        var bedroom = new Room(bedroomId, "Bedroom");
-        var kitchen = new Room(kitchenId, "Kitchen");
+        var bedroomId = PlaceId.of(UUID.randomUUID());
+        var kitchenId = PlaceId.of(UUID.randomUUID());
+        var bedroom = new Place(bedroomId, "Bedroom");
+        var kitchen = new Place(kitchenId, "Kitchen");
 
-        when(roomRepository.getRooms()).thenReturn(List.of(bedroom, kitchen));
+        when(placeRepository.getRooms()).thenReturn(List.of(bedroom, kitchen));
 
         // When
         var result = useCase.getRooms();

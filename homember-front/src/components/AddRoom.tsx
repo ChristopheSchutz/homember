@@ -27,8 +27,8 @@ function AddRoom({onAdd}: { onAdd: OnAdd }) {
     }
 
     return (
-        <div id="add-room" className="add-form">
-            <div id="add-room-title" className="add-form-title"><h2>Ajouter une pièce</h2></div>
+        <div id="add-place" className="add-form">
+            <div id="add-place-title" className="add-form-title"><h2>Ajouter une pièce</h2></div>
             <TextField id="add-name-value" label="Nom" variant="outlined" className='add-name-tf' value={newRoomName}
                        onChange={e => setNewRoomName(e.target.value)}/>
             <Button variant='contained' onClick={() => handleAdd()} disabled={isDisabled()}

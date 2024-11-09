@@ -40,10 +40,10 @@ function AddCabinet({rooms, onAdd}: { rooms: RoomDetails[], onAdd: OnAdd }) {
                        onChange={e => setNewCabinetName(e.target.value)}/>
             <FormControl>
                 <InputLabel>Pièce</InputLabel>
-                <Select id="room-id" label="Pièce" onChange={handleChangeRoom} value={newCabinetRoomId}
+                <Select id="place-id" label="Pièce" onChange={handleChangeRoom} value={newCabinetRoomId}
                         variant="outlined">
                     {
-                        rooms.map(room => <MenuItem key={room.id} value={room.id}>{room.name}</MenuItem>)
+                        rooms.map(place => <MenuItem key={place.id} value={place.id}>{place.name}</MenuItem>)
                     }
                 </Select>
             </FormControl>

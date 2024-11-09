@@ -1,31 +1,24 @@
 package com.hypesofts.homember.application.instruction.core;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
+@AllArgsConstructor
 public enum Command {
-    PUT("range", List.of(PositionedParameterType.of(ParameterType.ITEM, 1), PositionedParameterType.of(ParameterType.CABINET, 2), PositionedParameterType.of(ParameterType.ROOM, 3))),
-    REMOVE("enlève", List.of(PositionedParameterType.of(ParameterType.ITEM, 1), PositionedParameterType.of(ParameterType.CABINET, 2), PositionedParameterType.of(ParameterType.ROOM, 3))),
-    LOCATE("trouve", List.of(PositionedParameterType.of(ParameterType.ITEM, 1))),
-    UNDEFINED("undefined", Collections.emptyList());
+    PUT("range", List.of("dans"), List.of(ParameterType.ITEM, ParameterType.PLACE));
 
-    private final String word;
-    private final List<PositionedParameterType> positionedParameterTypes;
+    private final String order;
+    private final List<String> delimiters;
+    private final List<ParameterType> parameterTypes;
 
-    Command(String word, List<PositionedParameterType> positionedParameterTypes) {
-        this.word = word;
-        this.positionedParameterTypes = positionedParameterTypes;
-    }
-
-    public static Command fromString(String text) {
-        for (Command command : Command.values()) {
-            if (command.word.equalsIgnoreCase(text)) {
-                return command;
-            }
-        }
-        return UNDEFINED;
+    public static Command fromOrder(String text) {
+        return Arrays.stream(Command.values())
+                .filter(command -> command.order.equalsIgnoreCase(text))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Command not found"));
     }
 }

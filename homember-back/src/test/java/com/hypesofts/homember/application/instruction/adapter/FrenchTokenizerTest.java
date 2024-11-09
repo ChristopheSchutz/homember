@@ -1,6 +1,6 @@
 package com.hypesofts.homember.application.instruction.adapter;
 
-import com.hypesofts.homember.application.instruction.core.InstructionRequest;
+import com.hypesofts.homember.application.instruction.io.InstructionRequest;
 import com.hypesofts.homember.application.instruction.parsing.FrenchTokenSanitizer;
 import com.hypesofts.homember.application.instruction.parsing.InstructionTokenizer;
 import org.assertj.core.api.Assertions;
@@ -11,13 +11,13 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.List;
 import java.util.stream.Stream;
 
-public class FrenchTokenizerTest {
+class FrenchTokenizerTest {
 
     private final InstructionTokenizer instructionTokenizer = new InstructionTokenizer(new FrenchTokenSanitizer());
 
     @ParameterizedTest
     @MethodSource("testParameters")
-    public void should_tokenize_input(String input, List<String> expected) {
+    void should_tokenize_input(String input, List<String> expected) {
         var tokenizedInstruction = instructionTokenizer.tokenize(InstructionRequest.of(input));
         var tokens = tokenizedInstruction.tokens();
         Assertions.assertThat(tokens).containsExactlyElementsOf(expected);

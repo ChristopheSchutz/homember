@@ -1,8 +1,6 @@
 package com.hypesofts.homember.application.room.api;
 
-import com.hypesofts.homember.application.room.core.projections.RoomDetails;
-import com.hypesofts.homember.application.room.usecase.CRUDRoomUseCase;
-import com.hypesofts.homember.application.room.usecase.GetRoomDetailsUseCase;
+import com.hypesofts.homember.application.room.usecase.CRUDPlaceUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,32 +19,26 @@ import java.util.UUID;
 @ResponseBody
 public class RoomAPI {
 
-    private CRUDRoomUseCase crudRoomUseCase;
+    private final CRUDPlaceUseCase crudPlaceUseCase;
 
     @Autowired
-    public RoomAPI(CRUDRoomUseCase crudRoomUseCase, GetRoomDetailsUseCase getRoomDetailsUseCase) {
-        this.crudRoomUseCase = crudRoomUseCase;
-        this.getRoomDetailsUseCase = getRoomDetailsUseCase;
+    public RoomAPI(CRUDPlaceUseCase crudPlaceUseCase) {
+        this.crudPlaceUseCase = crudPlaceUseCase;
     }
-    private GetRoomDetailsUseCase getRoomDetailsUseCase;
+
 
     @GetMapping
     public List<RoomRepresentation> getRooms() {
-        return crudRoomUseCase.getRooms();
-    }
-
-    @GetMapping("/details")
-    public List<RoomDetails> getRoomDetails() {
-        return getRoomDetailsUseCase.getRoomDetails();
+        return crudPlaceUseCase.getRooms();
     }
 
     @PostMapping
     public RoomRepresentation create(@RequestBody RoomCreation roomCreation) {
-        return crudRoomUseCase.create(roomCreation);
+        return crudPlaceUseCase.create(roomCreation);
     }
 
     @DeleteMapping("/{roomId}")
     public void delete(@PathVariable UUID roomId) {
-        crudRoomUseCase.delete(roomId);
+        crudPlaceUseCase.delete(roomId);
     }
 }
