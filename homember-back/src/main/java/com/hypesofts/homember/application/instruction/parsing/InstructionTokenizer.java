@@ -1,13 +1,15 @@
 package com.hypesofts.homember.application.instruction.parsing;
 
-import com.hypesofts.homember.application.instruction.core.TokenizedInstruction;
-import com.hypesofts.homember.application.instruction.io.InstructionRequest;
+import com.hypesofts.homember.application.instruction.core.InstructionRequest;
+import com.hypesofts.homember.application.instruction.core.TokenizedInstructionRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
+@Component
 public class InstructionTokenizer {
 
     public static final String MULTIPLE_WHITESPACES = "\\s+";
@@ -24,7 +26,7 @@ public class InstructionTokenizer {
                 .split(SINGLE_WHITESPACE));
     }
 
-    public TokenizedInstruction tokenize(InstructionRequest request) {
-        return sanitizer.sanitize(TokenizedInstruction.of(buildTokens(request)));
+    public TokenizedInstructionRequest tokenize(InstructionRequest request) {
+        return sanitizer.sanitize(TokenizedInstructionRequest.of(buildTokens(request)));
     }
 }

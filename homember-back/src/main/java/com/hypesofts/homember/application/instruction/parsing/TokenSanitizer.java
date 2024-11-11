@@ -1,15 +1,17 @@
 package com.hypesofts.homember.application.instruction.parsing;
 
-import com.hypesofts.homember.application.instruction.core.TokenizedInstruction;
+import com.hypesofts.homember.application.instruction.core.TokenizedInstructionRequest;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
+@Component
 public interface TokenSanitizer {
 
     Set<String> tokensToSanitize();
 
-    default TokenizedInstruction sanitize(TokenizedInstruction request) {
-        return TokenizedInstruction.of(request.tokens().stream()
+    default TokenizedInstructionRequest sanitize(TokenizedInstructionRequest request) {
+        return TokenizedInstructionRequest.of(request.tokens().stream()
                 .filter(token -> !tokensToSanitize().contains(token))
                 .toList());
     }

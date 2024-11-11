@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public enum Command {
-    PUT("range", List.of("dans"), List.of(ParameterType.ITEM, ParameterType.PLACE));
+    STORE_ITEM("range", List.of("dans"), List.of(ParameterType.ITEM, ParameterType.PLACE));
 
     private final String order;
     private final List<String> delimiters;
