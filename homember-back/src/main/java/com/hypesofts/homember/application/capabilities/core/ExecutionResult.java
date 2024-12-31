@@ -1,4 +1,4 @@
-package com.hypesofts.homember.application.instruction.execution;
+package com.hypesofts.homember.application.capabilities.core;
 
 import lombok.Value;
 

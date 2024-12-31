@@ -1,7 +1,9 @@
 package com.hypesofts.homember.application.place.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hypesofts.homember.application.place.usecase.PlaceService;
+import com.hypesofts.homember.application.place.core.PlaceEntity;
+import com.hypesofts.homember.application.place.core.PlaceId;
+import com.hypesofts.homember.application.place.core.PlaceService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -49,8 +51,8 @@ class PlaceAPITest {
     void should_return_list_of_places() throws Exception {
         // Given
         var placeId = UUID.randomUUID();
-        var placeRepresentation = new PlaceResource(placeId, "Bedplace");
-        when(placeService.getPlaces()).thenReturn(List.of(placeRepresentation));
+        var placeEntity = new PlaceEntity(PlaceId.of(placeId), "Bedplace");
+        when(placeService.getPlaces()).thenReturn(List.of(placeEntity));
 
         // When/Then
         mockMvc.perform(get("/api/places"))
@@ -69,9 +71,9 @@ class PlaceAPITest {
         // Given
         var placeId = UUID.randomUUID();
         var placeCreation = new PlaceCreation("Living Place");
-        var createdPlace = new PlaceResource(placeId, "Living Place");
+        var placeEntity = new PlaceEntity(PlaceId.of(placeId), "Living Place");
 
-        when(placeService.create(any(PlaceCreation.class))).thenReturn(createdPlace);
+        when(placeService.create(any(PlaceCreation.class))).thenReturn(placeEntity);
 
         // When/Then
         mockMvc.perform(post("/api/places")
@@ -106,8 +108,8 @@ class PlaceAPITest {
         var bedplaceId = UUID.randomUUID();
         var kitchenId = UUID.randomUUID();
         var places = List.of(
-                new PlaceResource(bedplaceId, "Bedplace"),
-                new PlaceResource(kitchenId, "Kitchen")
+                new PlaceEntity(PlaceId.of(bedplaceId), "Bedplace"),
+                new PlaceEntity(PlaceId.of(kitchenId), "Kitchen")
         );
         when(placeService.getPlaces()).thenReturn(places);
 

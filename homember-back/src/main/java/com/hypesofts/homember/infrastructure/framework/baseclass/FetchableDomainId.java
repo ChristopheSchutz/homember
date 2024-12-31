@@ -21,7 +21,7 @@ public abstract class FetchableDomainId<T extends DomainEntity> implements Domai
 
     @Override
     public boolean equals(Object o) {
-        return o instanceof FetchableDomainId && this.id.equals(((FetchableDomainId) o).getId());
+        return o instanceof FetchableDomainId domainId && this.id.equals(domainId.getId());
     }
 
     @Override

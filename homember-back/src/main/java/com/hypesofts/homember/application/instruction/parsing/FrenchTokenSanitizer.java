@@ -4,7 +4,7 @@ import java.util.Set;
 
 public class FrenchTokenSanitizer implements TokenSanitizer {
 
-    private final static Set<String> TOKENS_TO_SANITIZE = Set.of("le", "la", "les", "l",
+    private static final Set<String> TOKENS_TO_SANITIZE = Set.of("le", "la", "les", "l",
             "de", "du", "des", "un", "une", "dans");
 
     @Override

@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 public class SpringContext implements ApplicationContextAware {
@@ -21,7 +20,7 @@ public class SpringContext implements ApplicationContextAware {
      * @return
      */
     public static <T extends Object> List<T> getBeans(Class<T> beanClass) {
-        return context.getBeansOfType(beanClass).entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
+        return context.getBeansOfType(beanClass).entrySet().stream().map(Map.Entry::getValue).toList();
     }
 
     @Override

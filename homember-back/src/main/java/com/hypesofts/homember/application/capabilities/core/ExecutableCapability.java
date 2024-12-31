@@ -1,8 +1,7 @@
-package com.hypesofts.homember.application.instruction.execution.actions;
+package com.hypesofts.homember.application.capabilities.core;
 
 import com.hypesofts.homember.application.instruction.core.Commands;
 import com.hypesofts.homember.application.instruction.core.Instruction;
-import com.hypesofts.homember.application.instruction.execution.ExecutionResult;
 
 public interface ExecutableCapability {
 

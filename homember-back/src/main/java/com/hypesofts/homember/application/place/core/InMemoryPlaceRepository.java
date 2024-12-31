@@ -28,11 +28,11 @@ public class InMemoryPlaceRepository implements PlaceRepository {
 
     @Override
     public void delete(PlaceId placeId) {
-        places.removeIf(room -> room.getId().equals(placeId));
+        places.removeIf(place -> place.getId().equals(placeId));
     }
 
     @Override
-    public List<PlaceEntity> getPlaces() {
+    public List<PlaceEntity> getAll() {
         return places;
     }
 

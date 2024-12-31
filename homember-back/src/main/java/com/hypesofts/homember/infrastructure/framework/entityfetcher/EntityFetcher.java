@@ -9,7 +9,7 @@ public interface EntityFetcher<I extends DomainId, E extends DomainEntity> {
 
     Class<? extends DomainId> getDomainIdConcreteClass();
 
-    default <I> boolean canFetch(DomainId id) {
+    default boolean canFetch(DomainId id) {
         return id.getClass().isAssignableFrom(getDomainIdConcreteClass());
     }
 }

@@ -1,6 +1,6 @@
 package com.hypesofts.homember.application.place.api;
 
-import com.hypesofts.homember.application.place.usecase.PlaceService;
+import com.hypesofts.homember.application.place.core.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,12 +29,12 @@ public class PlaceAPI {
 
     @GetMapping
     public List<PlaceResource> getPlaces() {
-        return placeService.getPlaces();
+        return placeService.getPlaces().stream().map(PlaceResource::new).toList();
     }
 
     @PostMapping
     public PlaceResource create(@RequestBody PlaceCreation placeCreation) {
-        return placeService.create(placeCreation);
+        return new PlaceResource(placeService.create(placeCreation));
     }
 
     @DeleteMapping("/{placeId}")

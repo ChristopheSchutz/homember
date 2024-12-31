@@ -4,6 +4,7 @@ import com.hypesofts.homember.application.place.api.PlaceCreation;
 import com.hypesofts.homember.application.place.core.PlaceEntity;
 import com.hypesofts.homember.application.place.core.PlaceId;
 import com.hypesofts.homember.application.place.core.PlaceRepository;
+import com.hypesofts.homember.application.place.core.PlaceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -37,7 +38,7 @@ class PlaceServiceTest {
     @Test
     void should_return_empty_list_when_no_places_exist() {
         // Given
-        when(placeRepository.getPlaces()).thenReturn(Collections.emptyList());
+        when(placeRepository.getAll()).thenReturn(Collections.emptyList());
 
         // When
         var result = useCase.getPlaces();
@@ -52,16 +53,16 @@ class PlaceServiceTest {
         // Given
         var placeId = PlaceId.of(UUID.randomUUID());
         var place = new PlaceEntity(placeId, "Bedplace");
-        when(placeRepository.getPlaces()).thenReturn(List.of(place));
+        when(placeRepository.getAll()).thenReturn(List.of(place));
 
         // When
         var result = useCase.getPlaces();
 
         // Then
         assertThat(result).hasSize(1);
-        var placeRepresentation = result.get(0);
-        assertThat(placeRepresentation.id()).isEqualTo(placeId.getId());
-        assertThat(placeRepresentation.name()).isEqualTo("Bedplace");
+        var placeResource = result.get(0);
+        assertThat(placeResource.getId()).isEqualTo(placeId);
+        assertThat(placeResource.getName()).isEqualTo("Bedplace");
     }
 
     // Step 3: Create place
@@ -83,8 +84,8 @@ class PlaceServiceTest {
         assertThat(capturedPlace.getName()).isEqualTo("Living Place");
         assertThat(capturedPlace.getId()).isNotNull();
 
-        assertThat(result.name()).isEqualTo("Living Place");
-        assertThat(result.id()).isEqualTo(createdPlace.getId().getId());
+        assertThat(result.getName()).isEqualTo("Living Place");
+        assertThat(result.getId()).isEqualTo(createdPlace.getId());
     }
 
     // Step 4: Delete place
@@ -111,7 +112,7 @@ class PlaceServiceTest {
         var bedplace = new PlaceEntity(bedplaceId, "Bedplace");
         var kitchen = new PlaceEntity(kitchenId, "Kitchen");
 
-        when(placeRepository.getPlaces()).thenReturn(List.of(bedplace, kitchen));
+        when(placeRepository.getAll()).thenReturn(List.of(bedplace, kitchen));
 
         // When
         var result = useCase.getPlaces();
@@ -119,10 +120,10 @@ class PlaceServiceTest {
         // Then
         assertThat(result).hasSize(2);
 
-        assertThat(result.get(0).id()).isEqualTo(bedplaceId.getId());
-        assertThat(result.get(0).name()).isEqualTo("Bedplace");
+        assertThat(result.get(0).getId()).isEqualTo(bedplaceId);
+        assertThat(result.get(0).getName()).isEqualTo("Bedplace");
 
-        assertThat(result.get(1).id()).isEqualTo(kitchenId.getId());
-        assertThat(result.get(1).name()).isEqualTo("Kitchen");
+        assertThat(result.get(1).getId()).isEqualTo(kitchenId);
+        assertThat(result.get(1).getName()).isEqualTo("Kitchen");
     }
 }

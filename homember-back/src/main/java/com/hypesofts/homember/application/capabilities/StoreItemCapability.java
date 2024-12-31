@@ -1,20 +1,23 @@
 package com.hypesofts.homember.application.capabilities;
 
+import com.hypesofts.homember.application.capabilities.core.ExecutableCapability;
+import com.hypesofts.homember.application.capabilities.core.ExecutionResult;
 import com.hypesofts.homember.application.instruction.core.Commands;
 import com.hypesofts.homember.application.instruction.core.Instruction;
+import com.hypesofts.homember.application.instruction.core.Parameter;
 import com.hypesofts.homember.application.instruction.core.ParameterType;
-import com.hypesofts.homember.application.instruction.execution.ExecutionResult;
-import com.hypesofts.homember.application.instruction.execution.actions.ExecutableCapability;
-import com.hypesofts.homember.application.place.api.PlaceResource;
-import com.hypesofts.homember.application.place.usecase.PlaceService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.hypesofts.homember.application.items.core.ItemService;
+import com.hypesofts.homember.application.place.core.PlaceEntity;
+import com.hypesofts.homember.application.place.core.PlaceService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class StoreItemCapability implements ExecutableCapability {
 
-    @Autowired
     private PlaceService placeService;
+    private ItemService itemService;
 
     @Override
     public Commands getCommand() {
@@ -23,7 +26,11 @@ public class StoreItemCapability implements ExecutableCapability {
 
     @Override
     public ExecutionResult execute(Instruction instruction) {
-        PlaceResource place = placeService.findByNameOrCreate(instruction.getFirstParameterOfType(ParameterType.PLACE).value());
+        Parameter placeParameter = instruction.getFirstParameterOfType(ParameterType.PLACE);
+        Parameter itemParameter = instruction.getFirstParameterOfType(ParameterType.ITEM);
+
+        PlaceEntity place = placeService.findByNameOrCreate(placeParameter.value());
+        itemService.findByNameAndPlaceOrCreate(itemParameter.value(), place.getId());
 
         return ExecutionResult.success();
     }

@@ -1,10 +1,6 @@
-package com.hypesofts.homember.application.place.usecase;
+package com.hypesofts.homember.application.place.core;
 
 import com.hypesofts.homember.application.place.api.PlaceCreation;
-import com.hypesofts.homember.application.place.api.PlaceResource;
-import com.hypesofts.homember.application.place.core.PlaceEntity;
-import com.hypesofts.homember.application.place.core.PlaceId;
-import com.hypesofts.homember.application.place.core.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,24 +17,21 @@ public class PlaceService {
         this.placeRepository = placeRepository;
     }
 
-    public List<PlaceResource> getPlaces() {
-        return placeRepository.getPlaces().stream()
-                .map(PlaceResource::new)
-                .toList();
+    public List<PlaceEntity> getPlaces() {
+        return placeRepository.getAll();
     }
 
-    public PlaceResource create(PlaceCreation placeCreation) {
+    public PlaceEntity create(PlaceCreation placeCreation) {
         PlaceEntity place = new PlaceEntity(PlaceId.create(), placeCreation.name());
-        return new PlaceResource(placeRepository.create(place));
+        return placeRepository.create(place);
     }
 
     public void delete(UUID placeId) {
         placeRepository.delete(PlaceId.of(placeId));
     }
 
-    public PlaceResource findByNameOrCreate(String name) {
+    public PlaceEntity findByNameOrCreate(String name) {
         return placeRepository.findByName(name)
-                .map(PlaceResource::new)
                 .orElseGet(() -> create(new PlaceCreation(name)));
     }
 }

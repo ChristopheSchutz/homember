@@ -9,7 +9,7 @@ public interface PlaceRepository {
 
     void delete(PlaceId placeId);
 
-    List<PlaceEntity> getPlaces();
+    List<PlaceEntity> getAll();
 
     Optional<PlaceEntity> findByName(String name);
 }

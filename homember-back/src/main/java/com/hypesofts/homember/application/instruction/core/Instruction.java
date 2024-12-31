@@ -1,18 +1,16 @@
 package com.hypesofts.homember.application.instruction.core;
 
-import lombok.Getter;
+import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Value
 public class Instruction {
     private static final String JOIN_CHARACTER = " ";
-    @Getter
-    private Commands command;
-    @Getter
-    private List<Parameter> parameters;
-
-    private TokenizedInstructionRequest tokenizedInstructionRequest;
+    Commands command;
+    List<Parameter> parameters;
+    TokenizedInstructionRequest tokenizedInstructionRequest;
 
 
     public Parameter getFirstParameterOfType(ParameterType parameterType) {
@@ -48,9 +46,9 @@ public class Instruction {
                     throw new IllegalArgumentException("Missing delimiter '" + delimiter + "'");
                 });
 
-        List<Parameter> parameters = new ArrayList<>();
+        List<Parameter> resultParameters = new ArrayList<>();
 
-        // Build parameters
+        // Build resultParameters
         for (int i = 0; i <= delimiters.size(); i++) {
             int startPos = (i == 0) ? 1 : tokenizedInstructionRequest.getDelimiterPosition(delimiters.get(i - 1)) + 1;
             int endPos = (i < delimiters.size()) ? tokenizedInstructionRequest.getDelimiterPosition(delimiters.get(i)) : tokenizedInstructionRequest.tokens().size();
@@ -61,8 +59,8 @@ public class Instruction {
             }
 
             var parameterValue = String.join(JOIN_CHARACTER, parameterTokens);
-            parameters.add(Parameter.of(parameterTypes.get(i), parameterValue));
+            resultParameters.add(Parameter.of(parameterTypes.get(i), parameterValue));
         }
-        return parameters;
+        return resultParameters;
     }
 }
