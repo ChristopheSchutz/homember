@@ -7,12 +7,20 @@ import java.util.List;
 
 public class Instruction {
     private static final String JOIN_CHARACTER = " ";
-
-    private TokenizedInstructionRequest tokenizedInstructionRequest;
     @Getter
-    private Command command;
+    private Commands command;
     @Getter
     private List<Parameter> parameters;
+
+    private TokenizedInstructionRequest tokenizedInstructionRequest;
+
+
+    public Parameter getFirstParameterOfType(ParameterType parameterType) {
+        return parameters.stream()
+                .filter(parameter -> parameter.type().equals(parameterType))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Parameter not found"));
+    }
 
     private Instruction(TokenizedInstructionRequest tokenizedInstructionRequest) {
         this.tokenizedInstructionRequest = tokenizedInstructionRequest;
@@ -24,11 +32,11 @@ public class Instruction {
         return new Instruction(tokenizedInstructionRequest);
     }
 
-    private Command buildCommand(TokenizedInstructionRequest tokenizedInstructionRequest) {
-        return Command.fromOrder(tokenizedInstructionRequest.tokens().get(0));
+    private Commands buildCommand(TokenizedInstructionRequest tokenizedInstructionRequest) {
+        return Commands.fromOrder(tokenizedInstructionRequest.tokens().get(0));
     }
 
-    public List<Parameter> buildParameters(TokenizedInstructionRequest tokenizedInstructionRequest) {
+    private List<Parameter> buildParameters(TokenizedInstructionRequest tokenizedInstructionRequest) {
         List<String> delimiters = command.getDelimiters();
         List<ParameterType> parameterTypes = command.getParameterTypes();
 

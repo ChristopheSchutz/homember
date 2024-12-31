@@ -1,6 +1,6 @@
 package com.hypesofts.homember.application.instruction.execution;
 
-import com.hypesofts.homember.application.instruction.core.Command;
+import com.hypesofts.homember.application.instruction.core.Commands;
 import com.hypesofts.homember.application.place.core.PlaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +15,6 @@ public class ActionDictionnary {
     private PlaceRepository placeRepository;
 
     public List<Action> getActions() {
-        return List.of(new Action(Command.STORE_ITEM, (place) -> placeRepository.create(null)));
+        return List.of(new Action(Commands.STORE_ITEM, (place) -> placeRepository.create(null)));
     }
 }

@@ -1,6 +1,6 @@
 package com.hypesofts.homember.application.place.api;
 
-import com.hypesofts.homember.application.place.usecase.CRUDPlaceUseCase;
+import com.hypesofts.homember.application.place.usecase.PlaceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,26 +19,26 @@ import java.util.UUID;
 @ResponseBody
 public class PlaceAPI {
 
-    private final CRUDPlaceUseCase crudPlaceUseCase;
+    private final PlaceService placeService;
 
     @Autowired
-    public PlaceAPI(CRUDPlaceUseCase crudPlaceUseCase) {
-        this.crudPlaceUseCase = crudPlaceUseCase;
+    public PlaceAPI(PlaceService placeService) {
+        this.placeService = placeService;
     }
 
 
     @GetMapping
-    public List<PlaceRepresentation> getPlaces() {
-        return crudPlaceUseCase.getPlaces();
+    public List<PlaceResource> getPlaces() {
+        return placeService.getPlaces();
     }
 
     @PostMapping
-    public PlaceRepresentation create(@RequestBody PlaceCreation placeCreation) {
-        return crudPlaceUseCase.create(placeCreation);
+    public PlaceResource create(@RequestBody PlaceCreation placeCreation) {
+        return placeService.create(placeCreation);
     }
 
     @DeleteMapping("/{placeId}")
     public void delete(@PathVariable UUID placeId) {
-        crudPlaceUseCase.delete(placeId);
+        placeService.delete(placeId);
     }
 }

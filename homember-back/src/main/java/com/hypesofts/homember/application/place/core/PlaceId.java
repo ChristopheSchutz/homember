@@ -1,11 +1,11 @@
 package com.hypesofts.homember.application.place.core;
 
-import com.hypesofts.homember.application.framework.baseclass.FetchableDomainId;
+import com.hypesofts.homember.infrastructure.framework.baseclass.FetchableDomainId;
 import lombok.NonNull;
 
 import java.util.UUID;
 
-public class PlaceId extends FetchableDomainId<Place> {
+public class PlaceId extends FetchableDomainId<PlaceEntity> {
     public PlaceId(UUID id) {
         super(id);
     }

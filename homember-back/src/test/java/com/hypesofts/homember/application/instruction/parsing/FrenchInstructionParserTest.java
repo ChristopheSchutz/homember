@@ -1,6 +1,6 @@
 package com.hypesofts.homember.application.instruction.parsing;
 
-import com.hypesofts.homember.application.instruction.core.Command;
+import com.hypesofts.homember.application.instruction.core.Commands;
 import com.hypesofts.homember.application.instruction.core.Instruction;
 import com.hypesofts.homember.application.instruction.core.InstructionRequest;
 import com.hypesofts.homember.application.instruction.core.Parameter;
@@ -44,7 +44,7 @@ class FrenchInstructionParserTest {
         Instruction instruction = parser.parse(request);
 
         // Then
-        assertThat(instruction.getCommand()).isEqualTo(Command.STORE_ITEM);
+        assertThat(instruction.getCommand()).isEqualTo(Commands.STORE_ITEM);
         assertThat(instruction.getParameters()).hasSize(2);
         assertThat(instruction.getParameters().get(0))
                 .isEqualTo(Parameter.of(ParameterType.ITEM, "la clé"));
@@ -65,7 +65,7 @@ class FrenchInstructionParserTest {
         Instruction instruction = parser.parse(request);
 
         // Then
-        assertThat(instruction.getCommand()).isEqualTo(Command.STORE_ITEM);
+        assertThat(instruction.getCommand()).isEqualTo(Commands.STORE_ITEM);
         assertThat(instruction.getParameters()).hasSize(2);
         assertThat(instruction.getParameters().get(0))
                 .isEqualTo(Parameter.of(ParameterType.ITEM, "les déguisements"));
@@ -86,7 +86,7 @@ class FrenchInstructionParserTest {
         Instruction instruction = parser.parse(request);
 
         // Then
-        assertThat(instruction.getCommand()).isEqualTo(Command.STORE_ITEM);
+        assertThat(instruction.getCommand()).isEqualTo(Commands.STORE_ITEM);
         assertThat(instruction.getParameters()).hasSize(2);
         assertThat(instruction.getParameters().get(0))
                 .isEqualTo(Parameter.of(ParameterType.ITEM, "l'écharpe"));

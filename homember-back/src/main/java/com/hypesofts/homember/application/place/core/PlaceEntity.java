@@ -1,6 +1,6 @@
 package com.hypesofts.homember.application.place.core;
 
-import com.hypesofts.homember.application.framework.baseclass.DomainEntity;
+import com.hypesofts.homember.infrastructure.framework.baseclass.DomainEntity;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
@@ -8,12 +8,12 @@ import java.util.UUID;
 
 @Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Place implements DomainEntity {
+public class PlaceEntity implements DomainEntity {
     @EqualsAndHashCode.Include
     private final PlaceId id;
     private final String name;
 
-    public Place(PlaceId id, String name) {
+    public PlaceEntity(PlaceId id, String name) {
         // assert name isn't null nor empty
         verifyParameters(name);
 

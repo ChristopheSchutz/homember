@@ -1,11 +1,11 @@
 package com.hypesofts.homember.application.instruction.execution;
 
-import com.hypesofts.homember.application.instruction.core.Command;
+import com.hypesofts.homember.application.instruction.core.Commands;
 
 import java.util.function.Consumer;
 
-public record Action(Command command, Consumer<String> targetExecution) {
-    public static Action of(Command command, Consumer<String> targetExecution) {
+public record Action(Commands command, Consumer<String> targetExecution) {
+    public static Action of(Commands command, Consumer<String> targetExecution) {
         return new Action(command, targetExecution);
     }
 

@@ -1,7 +1,7 @@
 package com.hypesofts.homember.application.place.usecase;
 
 import com.hypesofts.homember.application.place.api.PlaceCreation;
-import com.hypesofts.homember.application.place.core.Place;
+import com.hypesofts.homember.application.place.core.PlaceEntity;
 import com.hypesofts.homember.application.place.core.PlaceId;
 import com.hypesofts.homember.application.place.core.PlaceRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,16 +21,16 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class CRUDPlaceUseCaseTest {
+class PlaceServiceTest {
 
     @Mock
     private PlaceRepository placeRepository;
 
-    private CRUDPlaceUseCase useCase;
+    private PlaceService useCase;
 
     @BeforeEach
     void setUp() {
-        useCase = new CRUDPlaceUseCase(placeRepository);
+        useCase = new PlaceService(placeRepository);
     }
 
     // Step 1: Get empty place list
@@ -51,7 +51,7 @@ class CRUDPlaceUseCaseTest {
     void should_return_list_with_one_place() {
         // Given
         var placeId = PlaceId.of(UUID.randomUUID());
-        var place = new Place(placeId, "Bedplace");
+        var place = new PlaceEntity(placeId, "Bedplace");
         when(placeRepository.getPlaces()).thenReturn(List.of(place));
 
         // When
@@ -69,14 +69,14 @@ class CRUDPlaceUseCaseTest {
     void should_create_new_place() {
         // Given
         var placeCreation = new PlaceCreation("Living Place");
-        var createdPlace = new Place(PlaceId.create(), "Living Place");
-        when(placeRepository.create(any(Place.class))).thenReturn(createdPlace);
+        var createdPlace = new PlaceEntity(PlaceId.create(), "Living Place");
+        when(placeRepository.create(any(PlaceEntity.class))).thenReturn(createdPlace);
 
         // When
         var result = useCase.create(placeCreation);
 
         // Then
-        var placeCaptor = ArgumentCaptor.forClass(Place.class);
+        var placeCaptor = ArgumentCaptor.forClass(PlaceEntity.class);
         verify(placeRepository).create(placeCaptor.capture());
 
         var capturedPlace = placeCaptor.getValue();
@@ -108,8 +108,8 @@ class CRUDPlaceUseCaseTest {
         // Given
         var bedplaceId = PlaceId.of(UUID.randomUUID());
         var kitchenId = PlaceId.of(UUID.randomUUID());
-        var bedplace = new Place(bedplaceId, "Bedplace");
-        var kitchen = new Place(kitchenId, "Kitchen");
+        var bedplace = new PlaceEntity(bedplaceId, "Bedplace");
+        var kitchen = new PlaceEntity(kitchenId, "Kitchen");
 
         when(placeRepository.getPlaces()).thenReturn(List.of(bedplace, kitchen));
 

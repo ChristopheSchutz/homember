@@ -1,7 +1,7 @@
-package com.hypesofts.homember.application.framework.entityfetcher;
+package com.hypesofts.homember.infrastructure.framework.entityfetcher;
 
-import com.hypesofts.homember.application.framework.baseclass.DomainEntity;
-import com.hypesofts.homember.application.framework.baseclass.DomainId;
+import com.hypesofts.homember.infrastructure.framework.baseclass.DomainEntity;
+import com.hypesofts.homember.infrastructure.framework.baseclass.DomainId;
 
 public interface EntityFetcher<I extends DomainId, E extends DomainEntity> {
 

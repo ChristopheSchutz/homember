@@ -1,6 +1,6 @@
 package com.hypesofts.homember.application.instruction.execution;
 
-import com.hypesofts.homember.application.instruction.core.Command;
+import com.hypesofts.homember.application.instruction.core.Commands;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +19,7 @@ class ActionDictionnaryTest {
         }
 
         // Verify all commmands have an action
-        for (Command command : Command.values()) {
+        for (Commands command : Commands.values()) {
             Assertions.assertThat(dictionnary.getActions().stream().anyMatch(action -> action.command().equals(command))).isTrue();
         }
     }

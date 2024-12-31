@@ -1,4 +1,4 @@
-package com.hypesofts.homember.application.framework.entityfetcher;
+package com.hypesofts.homember.infrastructure.framework.entityfetcher;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;

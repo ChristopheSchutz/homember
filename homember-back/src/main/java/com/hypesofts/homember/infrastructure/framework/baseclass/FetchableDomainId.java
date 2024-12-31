@@ -1,7 +1,7 @@
-package com.hypesofts.homember.application.framework.baseclass;
+package com.hypesofts.homember.infrastructure.framework.baseclass;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.hypesofts.homember.application.framework.entityfetcher.EntityFetcherChain;
+import com.hypesofts.homember.infrastructure.framework.entityfetcher.EntityFetcherChain;
 import lombok.Getter;
 
 import java.util.UUID;

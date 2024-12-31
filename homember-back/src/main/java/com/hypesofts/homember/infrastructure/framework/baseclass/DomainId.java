@@ -1,4 +1,4 @@
-package com.hypesofts.homember.application.framework.baseclass;
+package com.hypesofts.homember.infrastructure.framework.baseclass;
 
 import java.util.UUID;
 

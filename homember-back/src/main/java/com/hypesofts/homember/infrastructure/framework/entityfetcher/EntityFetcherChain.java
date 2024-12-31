@@ -1,7 +1,7 @@
-package com.hypesofts.homember.application.framework.entityfetcher;
+package com.hypesofts.homember.infrastructure.framework.entityfetcher;
 
-import com.hypesofts.homember.application.framework.baseclass.DomainEntity;
-import com.hypesofts.homember.application.framework.baseclass.DomainId;
+import com.hypesofts.homember.infrastructure.framework.baseclass.DomainEntity;
+import com.hypesofts.homember.infrastructure.framework.baseclass.DomainId;
 import org.springframework.beans.factory.annotation.Configurable;
 
 import java.util.List;

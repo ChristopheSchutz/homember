@@ -1,7 +1,7 @@
 package com.hypesofts.homember.application.place.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hypesofts.homember.application.place.usecase.CRUDPlaceUseCase;
+import com.hypesofts.homember.application.place.usecase.PlaceService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,13 +30,13 @@ class PlaceAPITest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    private CRUDPlaceUseCase crudPlaceUseCase;
+    private PlaceService placeService;
 
     // Step 1: GET empty list of places
     @Test
     void should_return_empty_list_when_no_places_exist() throws Exception {
         // Given
-        when(crudPlaceUseCase.getPlaces()).thenReturn(Collections.emptyList());
+        when(placeService.getPlaces()).thenReturn(Collections.emptyList());
 
         // When/Then
         mockMvc.perform(get("/api/places"))
@@ -49,8 +49,8 @@ class PlaceAPITest {
     void should_return_list_of_places() throws Exception {
         // Given
         var placeId = UUID.randomUUID();
-        var placeRepresentation = new PlaceRepresentation(placeId, "Bedplace");
-        when(crudPlaceUseCase.getPlaces()).thenReturn(List.of(placeRepresentation));
+        var placeRepresentation = new PlaceResource(placeId, "Bedplace");
+        when(placeService.getPlaces()).thenReturn(List.of(placeRepresentation));
 
         // When/Then
         mockMvc.perform(get("/api/places"))
@@ -69,9 +69,9 @@ class PlaceAPITest {
         // Given
         var placeId = UUID.randomUUID();
         var placeCreation = new PlaceCreation("Living Place");
-        var createdPlace = new PlaceRepresentation(placeId, "Living Place");
+        var createdPlace = new PlaceResource(placeId, "Living Place");
 
-        when(crudPlaceUseCase.create(any(PlaceCreation.class))).thenReturn(createdPlace);
+        when(placeService.create(any(PlaceCreation.class))).thenReturn(createdPlace);
 
         // When/Then
         mockMvc.perform(post("/api/places")
@@ -96,7 +96,7 @@ class PlaceAPITest {
         mockMvc.perform(delete("/api/places/{placeId}", placeId))
                 .andExpect(status().isOk());
 
-        verify(crudPlaceUseCase).delete(placeId);
+        verify(placeService).delete(placeId);
     }
 
     // Step 6: GET with multiple places
@@ -106,10 +106,10 @@ class PlaceAPITest {
         var bedplaceId = UUID.randomUUID();
         var kitchenId = UUID.randomUUID();
         var places = List.of(
-                new PlaceRepresentation(bedplaceId, "Bedplace"),
-                new PlaceRepresentation(kitchenId, "Kitchen")
+                new PlaceResource(bedplaceId, "Bedplace"),
+                new PlaceResource(kitchenId, "Kitchen")
         );
-        when(crudPlaceUseCase.getPlaces()).thenReturn(places);
+        when(placeService.getPlaces()).thenReturn(places);
 
         // When/Then
         mockMvc.perform(get("/api/places"))
